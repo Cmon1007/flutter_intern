@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'day_3/day_three_task.dart';
 import 'day_one_screen.dart';
 void main()
 {
@@ -13,7 +14,7 @@ class MyApp extends StatelessWidget {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
       title: "Second day asssessment",
-      home: DayOneScreen(),
+      home: DayThreeTask(),
     );
   }
 }
