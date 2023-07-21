@@ -75,9 +75,11 @@ class NavigatedPage extends StatelessWidget {
                 childCount: 2,
                     (context, index) {
                   return Container(
-                    height: 500,
                     child: ListView.builder(
-                      itemCount: 4,
+                      itemCount: customScrollLists.length,
+                      primary: false,
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
                       itemBuilder: (context, index) {
                         Map<String,dynamic> lists=customScrollLists[index];
                         return Container(
