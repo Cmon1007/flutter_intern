@@ -105,7 +105,7 @@ class _DayFourTabState extends State<DayFourTab> {
         colorList.addAll([
           Colors.red,
           Colors.blue,
-          Colors.orangeAccent,
+          Colors.purple,
           Colors.grey,
           Colors.green,
         ]);

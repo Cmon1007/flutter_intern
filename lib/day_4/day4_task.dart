@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_internn/day_3/day_three_task.dart';
 import 'package:flutter_internn/day_4/day_4_tab.dart';
 import 'package:flutter_internn/day_4/navigated_page.dart';
-import 'package:flutter_internn/day_one_screen.dart';
+import 'package:flutter_internn/day_1/day_one_screen.dart';
 class DayFourTask extends StatelessWidget {
   const DayFourTask({Key? key}) : super(key: key);
 
