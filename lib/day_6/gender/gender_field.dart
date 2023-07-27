@@ -16,6 +16,17 @@ class GenderField extends StatefulWidget {
 class _GenderFieldState extends State<GenderField> {
 
   String? _selectedGender="Male";
+  // @override
+  // void didUpdateWidget(covariant GenderField oldWidget) {
+  //   // TODO: implement didUpdateWidget
+  //   super.didUpdateWidget(oldWidget);
+  //   if(widget.selectedGender!=oldWidget.selectedGender)
+  //     {
+  //       setState(() {
+  //         _selectedGender="";
+  //       });
+  //     }
+  // }
 
   @override
   Widget build(BuildContext context) {
