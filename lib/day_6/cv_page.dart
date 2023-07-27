@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_internn/day_6/language/language_field.dart';
 import 'package:flutter_internn/day_6/project/add_other_project.dart';
 import 'package:flutter_internn/day_6/project/project_field.dart';
+import 'package:flutter_internn/day_6/shared_preferences/shared_preferences_model.dart';
 import 'package:flutter_internn/day_6/workExperience/add_experience.dart';
 import 'package:flutter_internn/day_6/age/age_field.dart';
 import 'package:flutter_internn/day_6/name/all_name_field.dart';
@@ -14,74 +15,12 @@ import 'package:flutter_internn/saved_data.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'education/education_field.dart';
 import 'interest_area/interest_areas.dart';
-class CvData{
-  // String id;
-  String firstName;
-  String middleName;
-  String lastName;
-  int age;
-  String? gender;
-  List<String> skills;
-  List<WorkExperienceData> workExperiences;
-  List<ProjectData> projectDatas;
-  List<EducationData> educationDatas;
-  List<String> languages;
-  List<String> interestAreas;
-  CvData({
-    // required this.id,
-    required this.firstName,
-    required this.middleName,
-    required this.lastName,
-    required this.age,
-    this.gender,
-    this.skills=const [],
-    this.workExperiences=const [],
-    this.projectDatas=const[],
-    this.educationDatas=const[],
-    this.languages=const[],
-    this.interestAreas=const[],
-  });
-  Map<String,dynamic> toJson()
-  {
-    return {
-      'firstName':firstName,
-      'middleName':middleName,
-      'lastName': lastName,
-      'age':age,
-      'gender':gender,
-      'skills':skills,
-      'workExperiences':workExperiences.map((e) => e.toJson()).toList(),
-      'projectDatas':projectDatas.map((e) => e.toJson()).toList(),
-      'educationDatas':educationDatas.map((e) => e.toJson()).toList(),
-      'languages':languages,
-      'interestAreas':interestAreas,
-    };
-  }
-  factory CvData.fromJson(Map<String,dynamic> json)
-  {
-    return CvData(
-      // id: json['id'],
-      firstName: json['firstName'],
-      middleName: json['middleName'],
-      lastName: json['lastName'],
-      age: json['age'],
-      gender: json['gender'],
-      skills: List<String>.from(json['skills']),
-      workExperiences: List<WorkExperienceData>.from(json['workExperiences'].map((e)=>WorkExperienceData.fromJson(e)),),
-      projectDatas: List<ProjectData>.from(json['projectDatas'].map((e)=>ProjectData.fromJson(e)),),
-      educationDatas: List<EducationData>.from(json['educationDatas'].map((e)=>EducationData.fromJson(e))),
-      languages: List<String>.from(json['languages']),
-      interestAreas: List<String>.from(json['interestAreas']),
-    );
-  }
-}
 class CvPage extends StatefulWidget {
   const CvPage({Key? key}) : super(key: key);
   @override
   State<CvPage> createState() => _CvPageState();
 }
 class _CvPageState extends State<CvPage> {
-  CvData? _cvData;
   final GlobalKey<FormState> _key=GlobalKey<FormState>();
   ValueNotifier<bool> _valueNotifier=ValueNotifier(false);
   TextEditingController firstNameController=TextEditingController();
@@ -95,6 +34,7 @@ class _CvPageState extends State<CvPage> {
   List<String> selectedSkill=[];
   List<String> selectedLanguage=[];
   List<String> selectedAreas=[];
+  List<CvData> cvDataList=[];
   void _onTapIcon(WorkExperienceData workExperience)
   {
     setState(() {
@@ -121,6 +61,8 @@ class _CvPageState extends State<CvPage> {
     ageController.clear();
     selectedGender=null;
     selectedSkill.clear();
+    selectedLanguage.clear();
+    selectedAreas.clear();
     setState(() {
       workExperiences.clear();
       educationDatas.clear();
@@ -130,16 +72,16 @@ class _CvPageState extends State<CvPage> {
     CvData _prepareCvData()
     {
       final cvData= CvData(
-        // id: DateTime.now().toString(),
+          id: DateTime.now().toString(),
           firstName: firstNameController.text,
           middleName: middleNameController.text,
           lastName: lastNameController.text,
           age: int.tryParse(ageController.text)??0,
           gender:selectedGender,
-        skills: selectedSkill,
-        workExperiences: workExperiences,
-        projectDatas: projectDatas,
-        educationDatas: educationDatas,
+          skills: selectedSkill,
+          workExperiences: workExperiences,
+          projectDatas: projectDatas,
+          educationDatas: educationDatas,
       );
       return cvData;
    }
@@ -147,31 +89,32 @@ class _CvPageState extends State<CvPage> {
    async {
      SharedPreferences prefs=await SharedPreferences.getInstance();
      final cvData=_prepareCvData();
-     cvData.languages=selectedLanguage;
-     cvData.interestAreas=selectedAreas;
-     final jsonString=jsonEncode(cvData.toJson());
-     prefs.setString('cvData', jsonString);
-   }
-  //  @override
-  // void initState() {
-  //   super.initState();
-  //   SharedPreferences.getInstance().then((prefs){
-  //     final jsonString=prefs.getString('cvData');
-  //     if(jsonString!=null)
-  //       {
-  //         final jsonMap=jsonDecode(jsonString);
-  //         final loadedData=CvData.fromJson(jsonMap);
-  //         setState(() {
-  //           firstNameController.text=loadedData.firstName;
-  //           middleNameController.text=loadedData.middleName;
-  //           lastNameController.text=loadedData.lastName;
-  //           ageController.text=loadedData.age.toString();
-  //         });
-  //       }
-  //   });
-  // }
-
-
+     cvData.languages=List.from(selectedLanguage);
+     cvData.interestAreas=List.from(selectedAreas);
+     final jsonString=prefs.getString('cvData');
+     List<CvData> cvDataList=[];
+     if(jsonString!=null) {
+       try {
+         final jsonData = jsonDecode(jsonString);
+         if (jsonData is List<dynamic>) {
+           cvDataList = jsonData.map((json) => CvData.fromJson(json)).toList();
+         }
+         else if (jsonData is Map<String, dynamic>) {
+           cvDataList.add(CvData.fromJson(jsonData));
+         }
+       }
+       catch(e)
+     {
+       print("Error data: $e");
+     }
+     }
+     cvDataList.add(cvData);
+     final jsonStringToSave=jsonEncode(cvDataList.map((cvData) =>cvData.toJson()).toList());
+      await prefs.setString('cvData', jsonStringToSave);
+     setState(() {
+      this.cvDataList=cvDataList;
+     });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -361,19 +304,11 @@ class _CvPageState extends State<CvPage> {
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18.0),
                         )
                     ),
-                    onPressed: () async {
-                     SharedPreferences prefs=await SharedPreferences.getInstance();
-                     final jsonString=prefs.getString('cvData');
-                     if(jsonString!=null)
-                     {
-                       final jsonMap=jsonDecode(jsonString);
-                       final loadedData=CvData.fromJson(jsonMap);
-                      // final cvDataList=List<Map<String,dynamic>>.from(jsonDecode(jsonString));
-                     Navigator.push(context, MaterialPageRoute(builder: (context) => SavedData(cvData: loadedData,
-                       ),
-                     ),);
-                     }
-                    },
+                    onPressed: ()  {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => SavedData(),
+                         ),
+                      );
+                      },
                   child: Text("View Data",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
                   ),
                 ],
@@ -384,14 +319,3 @@ class _CvPageState extends State<CvPage> {
     );
   }
 }
-
-
-
-// //fetch existing data from shared preferences if there is any
-// final jsonString=prefs.getString('cvData');
-// List<Map<String,dynamic>> cvDataList=[];
-// if(jsonString!=null)
-//   {
-//     cvDataList=List<Map<String,dynamic>>.from(jsonDecode(jsonString));
-//   }
-// cvDataList.add(cvData.toJson());
