@@ -89,8 +89,8 @@ class _CvPageState extends State<CvPage> {
    async {
      SharedPreferences prefs=await SharedPreferences.getInstance();
      final cvData=_prepareCvData();
-     cvData.languages=List.from(selectedLanguage);
-     cvData.interestAreas=List.from(selectedAreas);
+     cvData.languages=selectedLanguage;
+     cvData.interestAreas=selectedAreas;
      final jsonString=prefs.getString('cvData');
      List<CvData> cvDataList=[];
      if(jsonString!=null) {
@@ -149,7 +149,7 @@ class _CvPageState extends State<CvPage> {
                   AllNameField(
                     name: 'Last Name',
                     controller: lastNameController,
-                    hintText: "First Name",
+                    hintText: "Last Name",
                   ),
                   AgeField(
                       hintText: "Age",
