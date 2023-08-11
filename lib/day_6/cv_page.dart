@@ -59,11 +59,11 @@ class _CvPageState extends State<CvPage> {
     middleNameController.clear();
     lastNameController.clear();
     ageController.clear();
-    selectedGender=null;
     selectedSkill.clear();
     selectedLanguage.clear();
     selectedAreas.clear();
     setState(() {
+      selectedGender='Male';
       workExperiences.clear();
       educationDatas.clear();
       projectDatas.clear();
