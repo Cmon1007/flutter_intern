@@ -10,28 +10,8 @@ part 'cart_state.dart';
 class CartBloc extends Bloc<CartEvent, CartState> {
   CartBloc() : super(CartSuccessState(carts: const [])) {
     on<AddToCartEvent>(addToCartEvent);
-    // on<RemoveFromCartEvent>(removeFromCartEvent);
     on<GetCartItemEvent>(getCartItemEvet);
-    // loadSavedData();
     }
-    // List<CartItem> cartItems=[];
-    // Future<void> loadSavedData()
-    // async {
-    //   SharedPreferences _prefs= await SharedPreferences.getInstance();
-    //  final savedData= _prefs.getStringList('cart');
-    //   if(savedData!=null)
-    //     {
-    //        cartItems=savedData.map((e) => CartItem.fromJson(e as Map<String, dynamic>)).toList();
-    //        emit(CartSuccessState(carts: cartItems));
-    //     }
-    //
-    // }
-    // Future<void> saveCartData()
-    // async {
-    //   SharedPreferences _prefs=await SharedPreferences.getInstance();
-    //   final itemList=cartItems.map((item) => item.toJson()).toList();
-    //   _prefs.setStringList('cart', itemList.cast<String>());
-    // }
   FutureOr<void> addToCartEvent(AddToCartEvent event, Emitter<CartState> emit) async{
       try
       {
@@ -46,15 +26,6 @@ class CartBloc extends Bloc<CartEvent, CartState> {
 
 
   }
-
-  // FutureOr<void> removeFromCartEvent(RemoveFromCartEvent event, Emitter<CartState> emit) {
-  //   if(state is CartSuccessState){
-  //     final currentState=state as CartSuccessState;
-  //     final updateCart=List.of(currentState.carts)..remove(event.item);
-  //     emit(CartSuccessState(carts: updateCart));
-  //   }
-  // }
-
   FutureOr<void> getCartItemEvet(GetCartItemEvent event, Emitter<CartState> emit) async{
     try
     {

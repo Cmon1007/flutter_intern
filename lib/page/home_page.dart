@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'cart_page.dart';
+import 'order_history.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -21,7 +22,7 @@ final AuthBloc _authBloc=AuthBloc();
   List<Widget> _selectedWidget = [
     ProductPage(),
     CartPage(),
-    UserPage(),
+    OrderHistory(),
   ];
   @override
   void initState() {
@@ -61,8 +62,8 @@ final AuthBloc _authBloc=AuthBloc();
                 label: "Cart",
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.person_pin_outlined, size: 30,),
-                label: "User",
+                icon: Icon(Icons.history, size: 30,),
+                label: "History",
               ),
             ],
             // type: BottomNavigationBarType.shifting,

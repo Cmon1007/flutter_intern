@@ -1,4 +1,5 @@
 import 'package:e_commerce/carts/bloc/cart_bloc.dart';
+import 'package:e_commerce/order_history/bloc/order_bloc.dart';
 import 'package:e_commerce/page/home_page.dart';
 import 'package:e_commerce/page/sign_in_page.dart';
 import 'package:e_commerce/page/splash_page.dart';
@@ -42,6 +43,7 @@ class MyApp extends StatelessWidget {
                 BlocProvider<NavigationCubit>(create: (context) => NavigationCubit(),),
                 BlocProvider<AuthBloc>(create: (context) => AuthBloc(),),
                   BlocProvider<CartBloc>(create: (context) => CartBloc(),),
+                  BlocProvider<OrderBloc>(create: (context) => OrderBloc(),)
               ],
                 child: GetMaterialApp(
                 debugShowCheckedModeBanner: false,

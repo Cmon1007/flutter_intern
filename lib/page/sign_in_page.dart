@@ -4,6 +4,8 @@ import 'package:e_commerce/signin_field/password_field.dart';
 import 'package:e_commerce/signin_field/username_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 
 class SignInPage extends StatelessWidget {
   const SignInPage({Key? key}) : super(key: key);
@@ -44,7 +46,13 @@ class SignInPage extends StatelessWidget {
             ),);
           }
           else if (state is AuthSuccessState) {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Login Success")));
+           Get.showSnackbar(GetSnackBar(
+             title: "Success",
+           duration: Duration(seconds: 2),
+           message: "Login Success",
+             snackPosition:SnackPosition.TOP,
+           )
+           );
             Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage(),));
             usernameController.clear();
             passwordController.clear();

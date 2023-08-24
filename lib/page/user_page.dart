@@ -10,10 +10,10 @@ class UserPage extends StatefulWidget {
   const UserPage({Key? key}) : super(key: key);
 
   @override
-  State<UserPage> createState() => _UserPageState();
+  State<UserPage> createState() => _OrderHistoryState();
 }
 
-class _UserPageState extends State<UserPage> {@override
+class _OrderHistoryState extends State<UserPage> {@override
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +60,7 @@ class _UserPageState extends State<UserPage> {@override
           ],
         leading: InkWell(
             child: Icon(Icons.arrow_back_ios_new,color: Colors.black,),
-        onTap: _goBack,
+        onTap: ()=>Get.back(),
         ),
         ),
         body: Container(
@@ -136,7 +136,7 @@ class _UserPageState extends State<UserPage> {@override
   Future<void> _logoutUser()
   async {
     SharedPreferences _prefs=await SharedPreferences.getInstance();
-    _prefs.clear();
+    _prefs.remove('token');
   }
   Future<bool> _goBack() async
   {
